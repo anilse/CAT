@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1476735489725_1" label="CAT" name="CAT"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1476735582702_2" label="cs576" name="cs576"/>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1476735638157_3" label="cs" name="cs"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1475574321429_0" label="Window Working Set" name="Aggregate for window 1475574321428"/>
+<mruList name="cs"/>
+<mruList name="cs576"/>
+<mruList name="CAT"/>
+</workingSetManager>

@@ -2,8 +2,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
+
+import jxl.read.biff.BiffException;
 
 @SuppressWarnings("serial")
 public class View extends JPanel{
@@ -57,7 +60,7 @@ public class View extends JPanel{
 				    	if(dialogResult == JOptionPane.YES_OPTION){
 					        try {
 								Model.parseExcel(selectedFile);
-							} catch (FileNotFoundException e1) {
+							} catch (BiffException | IOException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 								JOptionPane.showMessageDialog(null, "File not found, try again!");
