@@ -50,15 +50,21 @@ public class View extends JPanel{
 			public void actionPerformed(ActionEvent e) 
 			{
 				System.out.println("LOAD Button clicked.");
-				int result = fileChooser.showOpenDialog(getParent());
+				int fileChooserResult = fileChooser.showOpenDialog(getParent());
+				boolean parseExcelResult = false;
 				File selectedFile = fileChooser.getSelectedFile();
-				if (result == JFileChooser.APPROVE_OPTION) {					
+				if (fileChooserResult == JFileChooser.APPROVE_OPTION) {					
 				    if (Control.getAndCheckFileName(selectedFile)) {
 				    	int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure to load " +
 				    			"\""+ selectedFile.getName() + "\"" ,"Warning",dialogButton);
 				    	if(dialogResult == JOptionPane.YES_OPTION){
 					        try {
-								Control.parseExcel(selectedFile);
+					        	parseExcelResult = Control.parseExcel(selectedFile);
+					        	if (parseExcelResult){
+					        		System.out.println("file is parsed successfully!");
+					        	} else {
+					        		System.out.println("ERROR! file couldn't be parsed!");
+					        	}
 							} catch (BiffException | IOException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -71,7 +77,7 @@ public class View extends JPanel{
 				    }
 				    else {
 				    	JOptionPane.showMessageDialog(null, "Selected file: " + selectedFile.getAbsolutePath() + 
-					    		" and its extension is: " + FilenameUtils.getExtension(selectedFile.getName()) +"\nPlease, choose an excel file with extension \".xls\" or \".xlsx\".");
+					    		" and its extension is: " + FilenameUtils.getExtension(selectedFile.getName()) +"\nPlease, choose an excel file with extension \".xls\".");
 				    }
 				}
 			}

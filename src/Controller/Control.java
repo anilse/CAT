@@ -38,15 +38,20 @@ public class Control {
 	}
 
 	public static boolean getAndCheckFileName(File selectedFile){
+		if(selectedFile == null){
+			System.out.println("null input to getAndCheckFileName, don't try to parse.");
+			return false;
+		}
 	    String fileName = selectedFile.getName();
 	    System.out.println("Selected file: " + selectedFile.getAbsolutePath() + 
 	    		" and its extension is: " + FilenameUtils.getExtension(fileName));
-	    if((FilenameUtils.isExtension(fileName,"xls")) || (FilenameUtils.isExtension(fileName,"xlsx")))
+	    if((FilenameUtils.isExtension(fileName,"xls")))
 	    	return true;
 	    else
 	    	return false;
 	}
-	
+	/*
+	 * This function will not be used.
 	public static void writeToXml(Checklist c) throws IOException{
 
 		try {
@@ -66,9 +71,13 @@ public class Control {
 			e.printStackTrace();
 		}
 	}
-
-	public static void parseExcel(File file) throws FileNotFoundException,BiffException,IOException {
-
+	*/
+	public static boolean parseExcel(File file) throws BiffException,IOException {
+		if(!getAndCheckFileName(file)){
+			System.out.println("wrong input to parse excel function, return false.");
+			return false;
+		}
+			
 		System.out.println("File to parse: " + file.getAbsolutePath() +
 				" and its extension is: " + FilenameUtils.getExtension(file.getName()));
 
@@ -116,13 +125,14 @@ public class Control {
 			}
 
 		}
-
+		
 		checklist = new Checklist(checklist_item,function,checksteps,status);
 
 		//close excel file
 		w.close();
+		return true;
 		//send checklist elements to be written as xml file
-		writeToXml(checklist);
+		//writeToXml(checklist);
 
 	}
 
