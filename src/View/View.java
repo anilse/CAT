@@ -1,19 +1,22 @@
+package View;
+
+import Controller.Control;
+
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
-
 import jxl.read.biff.BiffException;
+
 
 @SuppressWarnings("serial")
 public class View extends JPanel{
 	JFrame frame;
-	Control control;
+	public Control control = null;
 	JLabel emptyLabel;
-	JFileChooser fileChooser = new JFileChooser();
+	public static JFileChooser fileChooser = null; 
 	int dialogButton = JOptionPane.YES_NO_OPTION;
     
 	public View(Control control) 
@@ -26,6 +29,7 @@ public class View extends JPanel{
 		frame.setSize(500, 250);
 		frame.add(this);
 		frame.setLocationRelativeTo(null);
+		fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		//this.setLayout(null);
 	}
@@ -39,7 +43,6 @@ public class View extends JPanel{
 		loadButton.setBounds(50, 100, 170, 20);
 		closeButton.setBounds(350, 100, 100, 20);
         //Display the window.
-        //frame.pack();
         frame.setVisible(true);
         
 		loadButton.addActionListener(new ActionListener() 
@@ -48,18 +51,14 @@ public class View extends JPanel{
 			{
 				System.out.println("LOAD Button clicked.");
 				int result = fileChooser.showOpenDialog(getParent());
-				if (result == JFileChooser.APPROVE_OPTION) {
-				    // user selects a file
-				    File selectedFile = fileChooser.getSelectedFile();
-				    String filename = selectedFile.getName();
-				    System.out.println("Selected file: " + selectedFile.getAbsolutePath() + 
-				    		" and its extension is: " + FilenameUtils.getExtension(filename));
-				    if ((FilenameUtils.isExtension(filename,"xls")) || (FilenameUtils.isExtension(filename,"xlsx")) ) {
+				File selectedFile = fileChooser.getSelectedFile();
+				if (result == JFileChooser.APPROVE_OPTION) {					
+				    if (Control.getAndCheckFileName(selectedFile)) {
 				    	int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure to load " +
-				    			"\""+ filename + "\"" ,"Warning",dialogButton);
+				    			"\""+ selectedFile.getName() + "\"" ,"Warning",dialogButton);
 				    	if(dialogResult == JOptionPane.YES_OPTION){
 					        try {
-								Model.parseExcel(selectedFile);
+								Control.parseExcel(selectedFile);
 							} catch (BiffException | IOException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -71,7 +70,8 @@ public class View extends JPanel{
 				    	}
 				    }
 				    else {
-				    	JOptionPane.showMessageDialog(null, "Please, choose an excel file.");
+				    	JOptionPane.showMessageDialog(null, "Selected file: " + selectedFile.getAbsolutePath() + 
+					    		" and its extension is: " + FilenameUtils.getExtension(selectedFile.getName()) +"\nPlease, choose an excel file with extension \".xls\" or \".xlsx\".");
 				    }
 				}
 			}

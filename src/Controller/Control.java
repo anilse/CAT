@@ -1,29 +1,57 @@
-import org.apache.commons.io.FilenameUtils;
+package Controller;
+
+import Model.Checklist;
+import View.View;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import jxl.Cell;
-import jxl.CellType;
-import jxl.Sheet;
-import jxl.Workbook;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import jxl.read.biff.BiffException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.apache.commons.io.FilenameUtils;
 
-public class Model {
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
 
+public class Control {
+	public View view = null;	
+	
+	public Control()
+	{
+		view = new View(this);
+	}
+	
+	/**
+	 * Show GUI
+	 */
+	public void start()
+	{
+		view.drawWindow(); 
+	}
+
+	public static boolean getAndCheckFileName(File selectedFile){
+	    String fileName = selectedFile.getName();
+	    System.out.println("Selected file: " + selectedFile.getAbsolutePath() + 
+	    		" and its extension is: " + FilenameUtils.getExtension(fileName));
+	    if((FilenameUtils.isExtension(fileName,"xls")) || (FilenameUtils.isExtension(fileName,"xlsx")))
+	    	return true;
+	    else
+	    	return false;
+	}
+	
 	public static void writeToXml(Checklist c) throws IOException{
 
 		try {
 			//default file path, rewrite this path to choose where to create xml file
-			String file_path = "C:\\Users\\<USER>\\Desktop\\example.xml";
+			String file_path = "example.xml";
 			FileOutputStream file = new FileOutputStream(new File(file_path));
 			JAXBContext jaxbContext = JAXBContext.newInstance(Checklist.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -98,4 +126,5 @@ public class Model {
 
 	}
 
+	
 }

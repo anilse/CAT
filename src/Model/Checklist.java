@@ -1,9 +1,9 @@
-import java.util.HashMap;
+package Model;
+
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlAttribute;
 
 
 @XmlRootElement
@@ -47,7 +47,7 @@ public class Checklist {
     @XmlElement
     public void setCheck_steps(Map<String, String> check_steps) {
 
-       String check_step =  check_steps.get(function);
+       //String check_step =  check_steps.get(function);
     }
 
     public String getStatus() {
