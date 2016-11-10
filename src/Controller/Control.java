@@ -7,6 +7,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,119 +26,139 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
 public class Control {
-	public View view = null;	
-	
-	public Control()
-	{
-		view = new View(this);
-	}
-	
-	/**
-	 * Show GUI
-	 */
-	public void start()
-	{
-		view.drawWindow(); 
-	}
+    public View view = null;
 
-	public static boolean getAndCheckFileName(File selectedFile){
-		if(selectedFile == null){
-			System.out.println("null input to getAndCheckFileName, don't try to parse.");
-			return false;
-		}
-	    String fileName = selectedFile.getName();
-	    System.out.println("Selected file: " + selectedFile.getAbsolutePath() + 
-	    		" and its extension is: " + FilenameUtils.getExtension(fileName));
-	    if((FilenameUtils.isExtension(fileName,"xls")))
-	    	return true;
-	    else
-	    	return false;
-	}
-	/*
-	 * This function will not be used.
+    public Control() {
+        view = new View(this);
+    }
+
+    /**
+     * Show GUI
+     */
+    public void start() {
+        view.drawWindow();
+    }
+
+    public static boolean getAndCheckFileName(File selectedFile) {
+        if (selectedFile == null) {
+            System.out.println("null input to getAndCheckFileName, don't try to parse.");
+            return false;
+        }
+        String fileName = selectedFile.getName();
+        System.out.println("Selected file: " + selectedFile.getAbsolutePath() +
+                " and its extension is: " + FilenameUtils.getExtension(fileName));
+        if ((FilenameUtils.isExtension(fileName, "xls")))
+            return true;
+        else
+            return false;
+    }
+    /*
+     * This function will not be used.
 	public static void writeToXml(Checklist c) throws IOException{
-
 		try {
 			//default file path, rewrite this path to choose where to create xml file
 			String file_path = "example.xml";
 			FileOutputStream file = new FileOutputStream(new File(file_path));
 			JAXBContext jaxbContext = JAXBContext.newInstance(Checklist.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
 				jaxbMarshaller.marshal(c, file);
 				jaxbMarshaller.marshal(c, System.out);
-
-
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 	}
 	*/
-	public static boolean parseExcel(File file) throws BiffException,IOException {
-		if(!getAndCheckFileName(file)){
-			System.out.println("wrong input to parse excel function, return false.");
-			return false;
-		}
-			
-		System.out.println("File to parse: " + file.getAbsolutePath() +
-				" and its extension is: " + FilenameUtils.getExtension(file.getName()));
 
-		int count_function = 0;
-		int count_checksteps = 0;
-		String[] function = new String[20];
-		String[] checkstep = new String[20];
-		Map<String, String> checksteps = new HashMap<String, String>();
-		String status = "";
-		String checklist_item = "";
-		Checklist checklist;
-		Workbook w;
-		w = Workbook.getWorkbook(file);
-		// Get the first sheet
-		Sheet sheet = w.getSheet(0);
+    public static ArrayList<Checklist> parseExcel(File file) throws FileNotFoundException, BiffException, IOException {
 
-		for (int j = 0; j < sheet.getColumns(); j++) {
-			for (int i = 0; i < sheet.getRows(); i++) {
-				Cell cell = sheet.getCell(j, i);
+        if (!getAndCheckFileName(file)) {
+            System.out.println("wrong input to parse excel function, return false.");
+            return null;
+        }
 
-				if (cell.getContents().equals("Checklist Item")) {
-					System.out.println(sheet.getCell(j+1,i).getContents());
-					checklist_item = sheet.getCell(j+1,i).getContents();
-				}
+        System.out.println("File to parse: " + file.getAbsolutePath() +
+                " and its extension is: " + FilenameUtils.getExtension(file.getName()));
 
-				if (cell.getContents().equals("Function")) {
-					System.out.println(sheet.getCell(j+1,i).getContents());
-					function[count_function] = sheet.getCell(j+1,i).getContents();
+        int count_function;
+        int count_info;
+        int count_status;
+        int count_method;
+        String[] function;
+        String[] test_method;
+        String criteria = "";
+        Map<String, String> test_info;
+        String[] status;
+        String checklist_item = "";
+        DateFormat dateFormat;
+        Date date;
+        Checklist checklist;
+        Workbook w;
+        ArrayList<Checklist> checklists = new ArrayList<Checklist>();
 
-					if(sheet.getCell(j+2,i).getContents().equals("Check Steps")) {
-						System.out.println(sheet.getCell(j+3,i).getContents());
-						checkstep[count_checksteps] = sheet.getCell(j+3,i).getContents();
-						checksteps.put(function[count_function],checkstep[count_checksteps]);
-						count_checksteps++;
+        w = Workbook.getWorkbook(file);
 
-					}
-					count_function ++;
-				}
+        for (int n = 0; n < w.getNumberOfSheets(); n++) {
+            status = new String[3];
+            test_method = new String[30];
+            function = new String[30];
+            count_function = 0;
+            count_info = 0;
+            count_status = 0;
+            count_method = 0;
+            test_info = new HashMap<String, String>();
+            dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            date = new Date();
 
-				if (cell.getContents().equals("Status")) {
-					System.out.println(sheet.getCell(j+1,i).getContents());
-					status = sheet.getCell(j+1,i).getContents();
-				}
+            Sheet sheet = w.getSheet(n);
 
-			}
+            for (int j = 0; j < sheet.getColumns(); j++) {
+                for (int i = 0; i < sheet.getRows(); i++) {
+                    Cell cell = sheet.getCell(j, i);
 
-		}
-		
-		checklist = new Checklist(checklist_item,function,checksteps,status);
+                    if (cell.getContents().startsWith("Checklist")) {
+                        checklist_item = sheet.getCell(j + 1, i).getContents();
+                        System.out.println("Checklist item is: " + checklist_item);
+                    } else if (cell.getContents().startsWith("Pass and Fail")) {
+                        criteria = sheet.getCell(j + 1, i + 1).getContents();
+                        System.out.println("Criteria is: " + criteria);
+                    } else if (cell.getContents().equals("Function")) {
+                        while (!sheet.getCell(j + 1, i + 1 + count_function).getContents().equals("")) {
+                            function[count_function] = sheet.getCell(j + 1, i + 1 + count_function).getContents();
+                            System.out.println("Function number " + (count_function + 1) + " is: " + function[count_function]);
+                            count_function++;
+                        }
+                    } else if (cell.getContents().equals("Test Information")) {
+                        while (count_info < 4) {
+                            test_info.put(sheet.getCell(j + 1, i + 1 + count_info).getContents(), sheet.getCell(j + 2, i + 1 + count_info).getContents());
+                            System.out.println(sheet.getCell(j + 1, i + 1 + count_info).getContents() + ": " + test_info.get(sheet.getCell(j + 1, i + 1 + count_info).getContents()));
+                            count_info++;
+                        }
+                    } else if (cell.getContents().equals("Status")) {
+                        while (count_status < 3) {
+                            status[count_status] = sheet.getCell(j + 1, i + 1 + count_status).getContents();
+                            System.out.println("Status option is: " + status[count_status]);
+                            count_status++;
+                        }
+                    } else if (cell.getContents().equals("Test Method")) {
+                        while (!sheet.getCell(j + 1, i + 1 + count_method).getContents().equals("")) {
+                            test_method[count_method] = sheet.getCell(j + 1, i + 1 + count_method).getContents();
+                            System.out.println("Test method is: " + test_method[count_method]);
+                            count_method++;
+                        }
+                    }
+                }
+            }
 
-		//close excel file
-		w.close();
-		return true;
-		//send checklist elements to be written as xml file
-		//writeToXml(checklist);
+            //create object to print sheet elements on window
+            checklist = new Checklist(checklist_item, function, test_method, criteria, test_info, status);
 
-	}
+            //add sheet object to arraylist
+            checklists.add(checklist);
+        }
+        //close excel file
+        w.close();
 
-	
+        return checklists;
+    }
 }
