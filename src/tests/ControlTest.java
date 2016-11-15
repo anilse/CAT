@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package tests;
 
@@ -13,77 +13,61 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Controller.Control;
+
 import junit.framework.TestCase;
+
 import jxl.read.biff.BiffException;
 
 
 /**
  * @author anilse
- *
  */
-public class ControlTest extends TestCase{
-	Control control;
+public class ControlTest extends TestCase {
+    Control control;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		control = new Control();
-	}
-	
-	@Test
-	public void testControllerObject() {
-		assertNotNull(control);
-	}
+    /**
+     * @throws java.lang.Exception
+     */
+    @Before
+    public void setUp() throws Exception {
+        control = new Control();
+    }
 
-	// getAndCheckFileName tests-start
-	@Test
-	public void testGetAndCheckFileNameXls() {
-		File dummyXlsFile = new File("deneme.xls");
-		assertTrue(control.getAndCheckFileName(dummyXlsFile));
-	}
-	
-	@Test
-	public void testGetAndCheckFileNameNull() {
-		assertFalse(control.getAndCheckFileName(null));
-	}
-	
-	@Test
-	public void testGetAndCheckFileNameWithNoExtension() {
-		File dummyFile = new File("file");
-		assertFalse(control.getAndCheckFileName(dummyFile));
-	}
-	
-	@Test
-	public void testGetAndCheckFileNameXml() {
-		File dummyXmlFile = new File("example.xml");
-		assertFalse(control.getAndCheckFileName(dummyXmlFile));
-	}
-	// getAndCheckFileName tests-end
-	// parseExcel tests-start
-	@Test
-	public void testparseExcelXls() throws BiffException, IOException {
-		File dummyXlsFile = new File("deneme.xls");
-		boolean result = control.parseExcel(dummyXlsFile);
-		assertTrue(result);
-	}
-	
-	@Test
-	public void testparseExcelNull() throws BiffException, IOException {
-		assertFalse(control.parseExcel(null));
-	}
-	
-	@Test
-	public void testparseExcelWithNoExtension() throws BiffException, IOException {
-		File dummyFile = new File("file");
-		assertFalse(control.parseExcel(dummyFile));
-	}
-	
-	@Test
-	public void testparseExcelXml() throws BiffException, IOException {
-		File dummyXmlFile = new File("example.xml");
-		assertFalse(control.parseExcel(dummyXmlFile));
-	}
+    @Test
+    public void testControllerObject() {
+        assertNotNull(control);
+    }
+
+    // getAndCheckFileName tests-start
+    @Test
+    public void testGetAndCheckFileNameXls() {
+        File dummyXlsFile = new File("deneme.xls");
+        assertTrue(control.getAndCheckFileName(dummyXlsFile));
+    }
+
+    @Test
+    public void testGetAndCheckFileNameNull() {
+        assertFalse(control.getAndCheckFileName(null));
+    }
+
+    @Test
+    public void testGetAndCheckFileNameWithNoExtension() {
+        File dummyFile = new File("file");
+        assertFalse(control.getAndCheckFileName(dummyFile));
+    }
+
+    @Test
+    public void testGetAndCheckFileNameXml() {
+        File dummyXmlFile = new File("example.xml");
+        assertFalse(control.getAndCheckFileName(dummyXmlFile));
+    }
+    // getAndCheckFileName tests-end
+    // parseExcel tests-start
+
+    @Test
+    public void testparseExcelNull() throws BiffException, IOException {
+        File dummyXmlFile = new File("example.xml");
+        assertNotNull(control.parseExcel(dummyXmlFile));
+    }
 
 }
