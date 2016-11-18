@@ -1,6 +1,5 @@
 package Model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class Checklist {
@@ -11,9 +10,6 @@ public class Checklist {
     String criteria;
     Map<String, String> test_info;
     String[] status;
-
-    public Checklist() {
-    }
 
     public Checklist(String checklist_item, String[] function, String[] test_method, String criteria, Map<String, String> test_info, String[] status) {
         this.checklist_item = checklist_item;
