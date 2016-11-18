@@ -60,7 +60,7 @@ public class View extends JPanel {
                                 "\"" + selectedFile.getName() + "\"", "Warning", dialogButton);
                         if (dialogResult == JOptionPane.YES_OPTION) {
                             try {
-                                ArrayList<Checklist> checklist = Control.parseExcel(selectedFile);
+                                Control.parseExcel(selectedFile);
                             } catch (BiffException | IOException e1) {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
