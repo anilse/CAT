@@ -3,6 +3,14 @@ package Controller;
 import Model.Checklist;
 import View.View;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,6 +22,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -27,11 +43,12 @@ import jxl.read.biff.BiffException;
 
 public class Control {
     public View view = null;
-
+    public static StringBuilder result = new StringBuilder();
+    public static int count_f_total = 0;		
+    
     public Control() {
         view = new View(this);
     }
-
     /**
      * Show GUI
      */
@@ -119,36 +136,62 @@ public class Control {
                     if (cell.getContents().startsWith("Checklist")) {
                         checklist_item = sheet.getCell(j + 1, i).getContents();
                         System.out.println("Checklist item is: " + checklist_item);
+                        result.append("<html>");
+                        result.append("Checklist item is: " + checklist_item);
+                        result.append("<html>");
+                        result.append("<br>");
                     } else if (cell.getContents().startsWith("Pass and Fail")) {
                         criteria = sheet.getCell(j + 1, i + 1).getContents();
                         System.out.println("Criteria is: " + criteria);
+                        result.append("<html>");
+                        result.append("Criteria is: " + criteria);
+                        result.append("<html>");
+                        result.append("<br>");
                     } else if (cell.getContents().equals("Function")) {
                         while (!sheet.getCell(j + 1, i + 1 + count_function).getContents().equals("")) {
                             function[count_function] = sheet.getCell(j + 1, i + 1 + count_function).getContents();
                             System.out.println("Function number " + (count_function + 1) + " is: " + function[count_function]);
+                            result.append("<html>");
+                            result.append("Function number " + (count_function + 1) + " is: " + function[count_function]);
+                            result.append("<html>");
+                            result.append("<br>");
                             count_function++;
                         }
                     } else if (cell.getContents().equals("Test Information")) {
                         while (count_info < 4) {
                             test_info.put(sheet.getCell(j + 1, i + 1 + count_info).getContents(), sheet.getCell(j + 2, i + 1 + count_info).getContents());
                             System.out.println(sheet.getCell(j + 1, i + 1 + count_info).getContents() + ": " + test_info.get(sheet.getCell(j + 1, i + 1 + count_info).getContents()));
+                            result.append("<html>");
+                            result.append(sheet.getCell(j + 1, i + 1 + count_info).getContents() + ": " + test_info.get(sheet.getCell(j + 1, i + 1 + count_info).getContents()));
+                            result.append("<html>");
+                            result.append("<br>");
                             count_info++;
                         }
                     } else if (cell.getContents().equals("Status")) {
                         while (count_status < 3) {
                             status[count_status] = sheet.getCell(j + 1, i + 1 + count_status).getContents();
                             System.out.println("Status option is: " + status[count_status]);
+                            result.append("<html>");
+                            result.append("Status option is: " + status[count_status]);
+                            result.append("<html>");
+                            result.append("<br>");
                             count_status++;
                         }
                     } else if (cell.getContents().equals("Test Method")) {
                         while (!sheet.getCell(j + 1, i + 1 + count_method).getContents().equals("")) {
                             test_method[count_method] = sheet.getCell(j + 1, i + 1 + count_method).getContents();
                             System.out.println("Test method is: " + test_method[count_method]);
+                            result.append("<html>");
+                            result.append("Test method is: " + test_method[count_method]);
+                            result.append("<html>");
+                            result.append("<br>");
                             count_method++;
                         }
                     }
                 }
             }
+            
+            count_f_total = count_function;
 
             //create object to print sheet elements on window
             checklist = new Checklist(checklist_item, function, test_method, criteria, test_info, status);
@@ -156,9 +199,105 @@ public class Control {
             //add sheet object to arraylist
             checklists.add(checklist);
         }
+       
+       
+        JButton btnAddFlight = new JButton("CLOSE");
+        btnAddFlight.setBounds(220, 400, 220, 30);
+        
+        JButton resultbutton = new JButton("GET RESULT");
+        resultbutton.setBounds(450, 400, 220, 30);
+        
+        JFrame window = new JFrame("CAT Result Table"); 
+        
+ 
+        JRadioButton t[] = new JRadioButton[count_f_total];
+        
+ //       ButtonGroup buttonGroup = new ButtonGroup();
+        
+        int x;
+        int offset =180;
+        for (x = 0 ; x < count_f_total ; x++ )  {
+        	t[x] = new JRadioButton("");
+            t[x].setBounds(570, offset, 18, 18);
+//            buttonGroup.add(t[x]);
+            window.add(t[x]);
+            offset += 16;
+        }
+        
+        
+        window.add(btnAddFlight);
+        window.add(resultbutton);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setLayout(new BorderLayout());
+        window.setPreferredSize(new Dimension(940, 480));
+        window.add(new JLabel(result.toString()), BorderLayout.CENTER);
+        window.pack();
+        window.setVisible(true);
+        window.setLocationRelativeTo(null);
+
+/*
+        
+        ImageIcon icon = new ImageIcon("C:\\Users\\okanv\\Downloads\\pic1.jpg");  
+        JLabel label = new JLabel("",icon,JLabel.CENTER);  
+        label.setIcon(icon);
+        window.add(label); 
+ */       
         //close excel file
         w.close();
+        
+        btnAddFlight.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("CLOSE Button clicked.");
+                window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+            }
+        });
 
+        
+        resultbutton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+        		 ImageIcon icon = new ImageIcon("C:\\Users\\okanv\\Downloads\\pic1.jpg");  
+                 JLabel label = new JLabel();  
+                 
+                 ImageIcon icon2 = new ImageIcon("C:\\Users\\okanv\\Downloads\\pic2.jpg");  
+                 JLabel label2 = new JLabel(); 
+                 
+                label.updateUI();
+                label2.updateUI();
+                label2.setEnabled(false);
+                label.setEnabled(false);
+            	int k = 0;
+            	int check = 0;
+            	for (k = 0 ; k < count_f_total ; k++) {
+            		if (t[k].isSelected() ) check++;
+            	}
+            	if (check == count_f_total) {
+            	//	 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+
+
+                    label.setIcon(icon);
+                    label.setBounds(600, 400, 5, 5);
+                    label.setVisible(true);
+                    label.setEnabled(true);
+                    label2.setVisible(false);
+                    window.add(label);
+                    window.revalidate();
+            	
+            	}
+            	else {
+            //		 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+ 
+                    label2.setIcon(icon2);
+                    label2.setBounds(600, 400, 5, 5);
+                    label2.setVisible(true);
+                    label2.setEnabled(true);
+                    label.setVisible(false);
+                    window.add(label2);
+                    window.revalidate();
+            		            	}
+            }
+        });
+        
         return checklists;
     }
+    
 }
