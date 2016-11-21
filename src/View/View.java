@@ -2,6 +2,8 @@ package View;
 
 import Controller.Control;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -38,7 +40,7 @@ public class View extends JPanel {
         //this.setLayout(null);
     }
 
-    public void drawWindow() {
+    public void drawMainWindow() {
         JButton loadButton = new JButton("LOAD EXCEL FILE...");
         JButton closeButton = new JButton("CLOSE");
 
@@ -61,6 +63,7 @@ public class View extends JPanel {
                         if (dialogResult == JOptionPane.YES_OPTION) {
                             try {
                                 Control.parseExcel(selectedFile);
+                                drawTestRunner();
                             } catch (BiffException | IOException e1) {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
@@ -81,6 +84,94 @@ public class View extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("CLOSE Button clicked.");
                 frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            }
+        });
+    }
+    
+    public void drawTestRunner(){
+        JButton btnAddFlight = new JButton("CLOSE");
+        btnAddFlight.setBounds(220, 400, 220, 30);
+        
+        JButton resultbutton = new JButton("GET RESULT");
+        resultbutton.setBounds(450, 400, 220, 30);
+        
+        JFrame window = new JFrame("CAT Result Table"); 
+        
+ 
+        JRadioButton t[] = new JRadioButton[Control.count_f_total];
+        
+ //       ButtonGroup buttonGroup = new ButtonGroup();
+        
+        int x;
+        int offset =180;
+        for (x = 0 ; x < Control.count_f_total ; x++ )  {
+        	t[x] = new JRadioButton("");
+            t[x].setBounds(570, offset, 18, 18);
+//            buttonGroup.add(t[x]);
+            window.add(t[x]);
+            offset += 16;
+        }
+        
+        
+        window.add(btnAddFlight);
+        window.add(resultbutton);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setLayout(new BorderLayout());
+        window.setPreferredSize(new Dimension(940, 480));
+        window.add(new JLabel(Control.result.toString()), BorderLayout.CENTER);
+        window.pack();
+        window.setVisible(true);
+        window.setLocationRelativeTo(null);
+
+        
+        btnAddFlight.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("CLOSE Button clicked.");
+                window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+            }
+        });
+
+        
+        resultbutton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+        		 ImageIcon icon = new ImageIcon("pic1.jpg");  
+                 JLabel label = new JLabel();  
+                 
+                 ImageIcon icon2 = new ImageIcon("pic2.jpg");  
+                 JLabel label2 = new JLabel(); 
+                 
+                label2.setEnabled(false);
+                label.setEnabled(false);
+            	int k = 0;
+            	int check = 0;
+            	for (k = 0 ; k < Control.count_f_total ; k++) {
+            		if (t[k].isSelected() ) check++;
+            	}
+            	if (check == Control.count_f_total) {
+            	//	 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+                    label.setIcon(icon);
+                    label.setBounds(600, 400, 5, 5);
+                    label.setVisible(true);
+                    label.setEnabled(true);
+                    window.add(label);
+                    label2.setEnabled(false);
+                    label2.setIcon(null);
+                    window.revalidate();
+            	
+            	}
+            	else {
+            //		 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+                    label2.setIcon(icon2);
+                    label2.setBounds(600, 400, 5, 5);
+                    label2.setVisible(true);
+                    label2.setEnabled(true);
+                    window.add(label2);
+                    label.setEnabled(false);
+                    label.setIcon(null);
+                    window.revalidate();
+            	}
+                label.updateUI();
+                label2.updateUI();
             }
         });
     }

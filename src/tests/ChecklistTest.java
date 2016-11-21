@@ -14,7 +14,8 @@ public class ChecklistTest extends TestCase{
 	
 	@Before
 	public void setUp() throws Exception {
-		checklist = new Checklist();
+		String fname = "dummyChecklist";
+		checklist = new Checklist(fname, null, null, fname, null, null);
 	}
 	
 	@Test
