@@ -64,6 +64,8 @@ public class View extends JPanel {
                             try {
                                 Control.parseExcel(selectedFile);
                                 drawTestRunner();
+                                frame.setVisible(false);
+                                // Close excel loader.
                             } catch (BiffException | IOException e1) {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
