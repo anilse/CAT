@@ -88,7 +88,7 @@ public class View extends JPanel {
         });
     }
     
-    public void drawTestRunner(Control control){
+    public void drawTestRunner(){
     	
 		 ImageIcon icon = new ImageIcon("pic1.jpg");  
          JLabel label = new JLabel();  
@@ -164,6 +164,7 @@ public class View extends JPanel {
                     window.remove(label2);
                     window.add(label3, BorderLayout.EAST);
                     window.revalidate();
+                    Control.test_status = 2;
 	            } else {
                     window.remove(label3);
 	            	if (check == Control.count_f_total) {
@@ -175,6 +176,7 @@ public class View extends JPanel {
 	                    window.remove(label2);
 	                    window.add(label, BorderLayout.EAST);
 	                    window.revalidate();
+	                    Control.test_status = 0;
 	            	
 	            	} else {
 	            //		 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
@@ -185,10 +187,18 @@ public class View extends JPanel {
 	                    window.remove(label);
 	                    window.add(label2, BorderLayout.EAST);
 	                    window.revalidate();
+	                    Control.test_status = 1;
 	            	}
 	                label.updateUI();
 	                label2.updateUI();
+	               
 	            }
+                switch (Control.test_status){
+	                case 0: System.out.println("test_status is PASS"); break;
+	                case 1: System.out.println("test_status is FAIL"); break;
+	                case 2: System.out.println("test_status is NA"); break;
+	                default: System.out.println("A weird test_status"); break;
+                }
             }
         });
     }

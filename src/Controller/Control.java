@@ -44,7 +44,11 @@ import jxl.read.biff.BiffException;
 public class Control {
     public View view = null;
     public static StringBuilder result = new StringBuilder();
-    public static int count_f_total = 0;		
+    public static int count_f_total = 0;
+    public static final int PASS = 0;
+    public static final int FAIL = 1;
+    public static final int NA = 2;
+    public static int test_status; // Default 2
     
     public Control() {
         view = new View(this);
