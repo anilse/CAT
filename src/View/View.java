@@ -10,11 +10,9 @@ import javax.swing.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.apache.commons.io.FilenameUtils;
 
-import Model.Checklist;
 import jxl.read.biff.BiffException;
 
 
@@ -91,15 +89,16 @@ public class View extends JPanel {
     }
     
     public void drawTestRunner(){
+
     	
-		 ImageIcon icon = new ImageIcon("pic1.jpg");  
-         JLabel label = new JLabel();  
+    	ImageIcon icon = new ImageIcon("pic1.jpg");  
+        JLabel label = new JLabel();  
          
-         ImageIcon icon2 = new ImageIcon("pic2.jpg");  
-         JLabel label2 = new JLabel(); 
+        ImageIcon icon2 = new ImageIcon("pic2.jpg");  
+        JLabel label2 = new JLabel(); 
     	
-		 ImageIcon icon3 = new ImageIcon("na.jpg");  
-         JLabel label3 = new JLabel();  
+		ImageIcon icon3 = new ImageIcon("na.jpg");  
+        JLabel label3 = new JLabel();  
          
         JButton btnAddFlight = new JButton("CLOSE");
         btnAddFlight.setBounds(220, 400, 220, 30);
