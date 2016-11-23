@@ -88,7 +88,17 @@ public class View extends JPanel {
         });
     }
     
-    public void drawTestRunner(){
+    public void drawTestRunner(Control control){
+    	
+		 ImageIcon icon = new ImageIcon("pic1.jpg");  
+         JLabel label = new JLabel();  
+         
+         ImageIcon icon2 = new ImageIcon("pic2.jpg");  
+         JLabel label2 = new JLabel(); 
+    	
+		 ImageIcon icon3 = new ImageIcon("na.jpg");  
+         JLabel label3 = new JLabel();  
+         
         JButton btnAddFlight = new JButton("CLOSE");
         btnAddFlight.setBounds(220, 400, 220, 30);
         
@@ -97,7 +107,6 @@ public class View extends JPanel {
         
         JFrame window = new JFrame("CAT Result Table"); 
         
- 
         JRadioButton t[] = new JRadioButton[Control.count_f_total];
         
  //       ButtonGroup buttonGroup = new ButtonGroup();
@@ -134,44 +143,52 @@ public class View extends JPanel {
         
         resultbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-        		 ImageIcon icon = new ImageIcon("pic1.jpg");  
-                 JLabel label = new JLabel();  
-                 
-                 ImageIcon icon2 = new ImageIcon("pic2.jpg");  
-                 JLabel label2 = new JLabel(); 
-                 
+            	// Initiate the icons first.
+                label3.setEnabled(false); 
                 label2.setEnabled(false);
                 label.setEnabled(false);
+                label.setIcon(null);
+                label2.setIcon(null);
+                label3.setIcon(null);
             	int k = 0;
             	int check = 0;
             	for (k = 0 ; k < Control.count_f_total ; k++) {
             		if (t[k].isSelected() ) check++;
             	}
-            	if (check == Control.count_f_total) {
-            	//	 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
-                    label.setIcon(icon);
-                    label.setBounds(600, 400, 5, 5);
-                    label.setVisible(true);
-                    label.setEnabled(true);
-                    window.add(label);
-                    label2.setEnabled(false);
-                    label2.setIcon(null);
+            	if (check == 0){
+                    label3.setIcon(icon3);
+                    label3.setBounds(300, 400, 5, 5);
+                    label3.setVisible(true);
+                    label3.setEnabled(true);
+                    window.remove(label);
+                    window.remove(label2);
+                    window.add(label3, BorderLayout.EAST);
                     window.revalidate();
-            	
-            	}
-            	else {
-            //		 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
-                    label2.setIcon(icon2);
-                    label2.setBounds(600, 400, 5, 5);
-                    label2.setVisible(true);
-                    label2.setEnabled(true);
-                    window.add(label2);
-                    label.setEnabled(false);
-                    label.setIcon(null);
-                    window.revalidate();
-            	}
-                label.updateUI();
-                label2.updateUI();
+	            } else {
+                    window.remove(label3);
+	            	if (check == Control.count_f_total) {
+	            	//	 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+	                    label.setIcon(icon);
+	                    label.setBounds(300, 400, 5, 5);
+	                    label.setVisible(true);
+	                    label.setEnabled(true);
+	                    window.remove(label2);
+	                    window.add(label, BorderLayout.EAST);
+	                    window.revalidate();
+	            	
+	            	} else {
+	            //		 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+	                    label2.setIcon(icon2);
+	                    label2.setBounds(300, 400, 5, 5);
+	                    label2.setVisible(true);
+	                    label2.setEnabled(true);
+	                    window.remove(label);
+	                    window.add(label2, BorderLayout.EAST);
+	                    window.revalidate();
+	            	}
+	                label.updateUI();
+	                label2.updateUI();
+	            }
             }
         });
     }
