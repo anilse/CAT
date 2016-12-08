@@ -49,10 +49,11 @@ public class Control {
     public static final int FAIL = 1;
     public static final int NA = 2;
     public static int test_status; // Default 2
-    
+
     public Control() {
         view = new View(this);
     }
+
     /**
      * Show GUI
      */
@@ -74,11 +75,11 @@ public class Control {
             return false;
     }
 
-    public static ArrayList<Checklist> parseExcel(File file) throws FileNotFoundException, BiffException, IOException {
+    public static boolean parseExcel(File file) throws FileNotFoundException, BiffException, IOException {
 
         if (!getAndCheckFileName(file)) {
             System.out.println("wrong input to parse excel function, return false.");
-            return null;
+            return false;
         }
 
         System.out.println("File to parse: " + file.getAbsolutePath() +
@@ -149,7 +150,11 @@ public class Control {
                             test_info.put(sheet.getCell(j + 1, i + 1 + count_info).getContents(), sheet.getCell(j + 2, i + 1 + count_info).getContents());
                             System.out.println(sheet.getCell(j + 1, i + 1 + count_info).getContents() + ": " + test_info.get(sheet.getCell(j + 1, i + 1 + count_info).getContents()));
                             result.append("<html>");
-                            result.append(sheet.getCell(j + 1, i + 1 + count_info).getContents() + ": " + test_info.get(sheet.getCell(j + 1, i + 1 + count_info).getContents()));
+                            if (sheet.getCell(j + 1, i + 1 + count_info).getContents().startsWith("Test Date")) {
+                                result.append(sheet.getCell(j + 1, i + 1 + count_info).getContents() + ": " + dateFormat.format(date));
+                            } else {
+                                result.append(sheet.getCell(j + 1, i + 1 + count_info).getContents() + ": " + test_info.get(sheet.getCell(j + 1, i + 1 + count_info).getContents()));
+                            }
                             result.append("<html>");
                             result.append("<br>");
                             count_info++;
@@ -177,7 +182,7 @@ public class Control {
                     }
                 }
             }
-            
+
             count_f_total = count_function;
 
             //create object to print sheet elements on window
@@ -186,12 +191,12 @@ public class Control {
             //add sheet object to arraylist
             checklists.add(checklist);
         }
-        
+
         //close excel file
         w.close();
 
-        
-        return checklists;
+        return true;
+
     }
-    
+
 }
