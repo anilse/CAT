@@ -8,8 +8,13 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -144,6 +149,17 @@ public class View extends JPanel {
 
         resultbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
+                //Create my_first.feature file to be used for calabash
+                File file =new File("calabash\\features\\my_first.feature");
+                try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(file), "utf-8"))) {
+                    writer.write(Control.calabash_steps);
+                }
+                catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+
                 // Initiate the icons first.
                 label3.setEnabled(false);
                 label2.setEnabled(false);
