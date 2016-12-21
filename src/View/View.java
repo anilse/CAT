@@ -103,13 +103,14 @@ public class View extends JPanel {
         JButton btnAddFlight = new JButton("CLOSE");
         btnAddFlight.setBounds(220, 400, 220, 30);
 
-        JButton resultbutton = new JButton("RUN ALL");
+        JButton resultbutton = new JButton("START CALABASH");
         resultbutton.setBounds(450, 400, 220, 30);
 
-        final JFrame window = new JFrame("CAT Result Table");
+        final JFrame window = new JFrame("CAT Result");
 
         final JButton t[] = new JButton[Control.count_f_total];
 
+        /*
         //       ButtonGroup buttonGroup = new ButtonGroup();
 
         int x;
@@ -121,7 +122,7 @@ public class View extends JPanel {
             window.add(t[x]);
             offset += 16;
         }
-
+		*/
 
         window.add(btnAddFlight);
         window.add(resultbutton);
