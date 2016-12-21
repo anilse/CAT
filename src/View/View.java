@@ -8,8 +8,10 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -88,6 +90,7 @@ public class View extends JPanel {
         });
     }
 
+
     public void drawTestRunner() {
 
 
@@ -129,7 +132,7 @@ public class View extends JPanel {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLayout(new BorderLayout());
         window.setPreferredSize(new Dimension(940, 480));
-        window.add(new JLabel(Control.result.toString()), BorderLayout.CENTER);
+        window.add(new JLabel(Control.result.toString()), BorderLayout.NORTH);
         window.pack();
         window.setVisible(true);
         window.setLocationRelativeTo(null);
@@ -145,6 +148,9 @@ public class View extends JPanel {
 
         resultbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	
+
+            	
                 // Initiate the icons first.
                 label3.setEnabled(false);
                 label2.setEnabled(false);

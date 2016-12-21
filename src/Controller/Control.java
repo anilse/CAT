@@ -159,7 +159,7 @@ public class Control {
                             result.append("<br>");
                             count_info++;
                         }
-                    } else if (cell.getContents().equals("Status")) {
+                    } /*else if (cell.getContents().equals("Status")) {
                         while (count_status < 3) {
                             status[count_status] = sheet.getCell(j + 1, i + 1 + count_status).getContents();
                             System.out.println("Status option is: " + status[count_status]);
@@ -169,7 +169,7 @@ public class Control {
                             result.append("<br>");
                             count_status++;
                         }
-                    } else if (cell.getContents().equals("Test Method")) {
+                    }*/ else if (cell.getContents().equals("Test Method")) {
                         while (!sheet.getCell(j + 1, i + 1 + count_method).getContents().equals("")) {
                             test_method[count_method] = sheet.getCell(j + 1, i + 1 + count_method).getContents();
                             System.out.println("Test method is: " + test_method[count_method]);
