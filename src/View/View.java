@@ -151,6 +151,7 @@ public class View extends JPanel {
 
         resultbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	JOptionPane.showMessageDialog(null, "Test starts! Go, get some coffee, while the tests run!");
             	try {
             	    Runtime r = Runtime.getRuntime();
             	    String myScript = "export ANDROID_HOME=/home/anilse/Android/Sdk; calabash-android run Email.apk -v --format html --out reports.html features/my_second.feature ; sleep 20; firefox reports.html";
@@ -161,6 +162,8 @@ public class View extends JPanel {
             	} catch (IOException ex) {
             	    ex.printStackTrace();
             	}
+            	
+                JOptionPane.showMessageDialog(null, "Test finished! You can check reports.html again.");
             	/*
                 // Initiate the icons first.
                 label3.setEnabled(false);
