@@ -49,6 +49,7 @@ public class Control {
     public static final int FAIL = 1;
     public static final int NA = 2;
     public static int test_status; // Default 2
+    public static String calabash_steps = "";
 
     public Control() {
         view = new View(this);
@@ -136,6 +137,8 @@ public class Control {
                         result.append("<html>");
                         result.append("<br>");
                     } else if (cell.getContents().equals("Function")) {
+                        calabash_steps = sheet.getCell(j + 2, i + 1).getContents();
+                        System.out.println("Calabash steps are: " + calabash_steps);
                         while (!sheet.getCell(j + 1, i + 1 + count_function).getContents().equals("")) {
                             function[count_function] = sheet.getCell(j + 1, i + 1 + count_function).getContents();
                             System.out.println("Function number " + (count_function + 1) + " is: " + function[count_function]);
