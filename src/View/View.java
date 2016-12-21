@@ -11,11 +11,14 @@ import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
+import java.io.Writer;
 
 import org.apache.commons.io.FilenameUtils;
 import jxl.read.biff.BiffException;
@@ -152,7 +155,16 @@ public class View extends JPanel {
         resultbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	JOptionPane.showMessageDialog(null, "Test starts! Go, get some coffee, while the tests run!");
-            	try {
+            	//Create my_first.feature file to be used for calabash
+                File file =new File("calabash\\features\\my_first.feature");
+                try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(file), "utf-8"))) {
+                    writer.write(Control.calabash_steps);
+                }
+                catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+                try {
             	    Runtime r = Runtime.getRuntime();
             	    String myScript = "export ANDROID_HOME=/home/anilse/Android/Sdk; calabash-android run Email.apk -v --format html --out reports.html features/my_second.feature ; sleep 20; firefox reports.html";
             	    String[] cmdArray = {"xterm", "-e", myScript + " ; le_exec"};
@@ -165,6 +177,17 @@ public class View extends JPanel {
             	
                 JOptionPane.showMessageDialog(null, "Test finished! You can check reports.html again.");
             	/*
+
+                //Create my_first.feature file to be used for calabash
+                File file =new File("calabash\\features\\my_first.feature");
+                try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(file), "utf-8"))) {
+                    writer.write(Control.calabash_steps);
+                }
+                catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+
                 // Initiate the icons first.
                 label3.setEnabled(false);
                 label2.setEnabled(false);
