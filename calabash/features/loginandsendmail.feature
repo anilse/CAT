@@ -50,4 +50,33 @@ Feature: Sign-in
     Then I wait
     Then I wait
     Then I wait
-    
+
+  Scenario: Send mail
+    Then I wait
+    Then I wait to see "Inbox"
+    Then I press image button number 2
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I wait
+    Then I input "anil.sezgin@vestel.com.tr" into RecipientEditTextView field with id "to"
+    Then I input "Test" into EnterSubject field with id "subject"
+    Then I input "Test" into BodyView field with id "body"
+    Then I press view with id "send"
+    Then I scroll down
+    Then I scroll down
+    Then I press "Navigate up"
+    Then I press "Outbox"
+    Given I see "anil.sezgin"
+    Then I wait

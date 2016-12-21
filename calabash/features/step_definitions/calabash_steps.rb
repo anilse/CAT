@@ -20,3 +20,14 @@ Then(/^I hide keyboard$/) do
    hide_soft_keyboard
 end
 
+Then (/^I input "([^\"]*)" into RecipientEditTextView field with id "([^\"]*)"$/) do |text, id|
+  enter_text("com.android.ex.chips.RecipientEditTextView id:'#{id}'", text)
+end
+
+Then (/^I input "([^\"]*)" into EnterSubject field with id "([^\"]*)"$/) do |text, id|
+  enter_text("com.android.mail.compose.EnterSubject id:'#{id}'", text)
+end
+
+Then (/^I input "([^\"]*)" into BodyView field with id "([^\"]*)"$/) do |text, id|
+  enter_text("com.android.mail.compose.BodyView id:'#{id}'", text)
+end
