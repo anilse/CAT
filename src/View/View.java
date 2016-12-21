@@ -9,12 +9,15 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
 
 import org.apache.commons.io.FilenameUtils;
-
 import jxl.read.biff.BiffException;
 
 
@@ -148,9 +151,17 @@ public class View extends JPanel {
 
         resultbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	
-
-            	
+            	try {
+            	    Runtime r = Runtime.getRuntime();
+            	    String myScript = "export ANDROID_HOME=/home/anilse/Android/Sdk; calabash-android run Email.apk -v --format html --out reports.html features/my_second.feature ; sleep 20; firefox reports.html";
+            	    String[] cmdArray = {"xterm", "-e", myScript + " ; le_exec"};
+            	    r.exec(cmdArray).waitFor();
+            	} catch (InterruptedException ex){
+            	    ex.printStackTrace();
+            	} catch (IOException ex) {
+            	    ex.printStackTrace();
+            	}
+            	/*
                 // Initiate the icons first.
                 label3.setEnabled(false);
                 label2.setEnabled(false);
@@ -214,7 +225,7 @@ public class View extends JPanel {
                     default:
                         System.out.println("A weird test_status");
                         break;
-                }
+                }*/
             }
         });
     }
