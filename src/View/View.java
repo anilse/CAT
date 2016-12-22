@@ -109,13 +109,13 @@ public class View extends JPanel {
         final ImageIcon icon3 = new ImageIcon("na.jpg");
         final JLabel label3 = new JLabel();
 
-        JButton btnAddFlight = new JButton("CLOSE");
+        JButton btnAddFlight = new JButton("Close");
         btnAddFlight.setBounds(220, 400, 220, 30);
 
-        JButton resultbutton = new JButton("START CALABASH");
+        JButton resultbutton = new JButton("Run Tests");
         resultbutton.setBounds(450, 400, 220, 30);
 
-        final JFrame window = new JFrame("CAT Result");
+        final JFrame window = new JFrame("Checklist Summary");
 
         final JButton t[] = new JButton[Control.count_f_total];
 
@@ -154,19 +154,11 @@ public class View extends JPanel {
 
         resultbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	JOptionPane.showMessageDialog(null, "Test starts! Go, get some coffee, while the tests run!");
-            	//Create my_first.feature file to be used for calabash
-                File file =new File("calabash\\features\\my_first.feature");
-                try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                        new FileOutputStream(file), "utf-8"))) {
-                    writer.write(Control.calabash_steps);
-                }
-                catch(Exception ex) {
-                    ex.printStackTrace();
-                }
+            	JOptionPane.showMessageDialog(null, "Press OK! Then, Test starts! Go, get some coffee, while the tests run!");
+
                 try {
             	    Runtime r = Runtime.getRuntime();
-            	    String myScript = "export ANDROID_HOME=/home/anilse/Android/Sdk; calabash-android run Email.apk -v --format html --out reports.html features/my_second.feature ; sleep 20; firefox reports.html";
+            	    String myScript = "export ANDROID_HOME=/home/anilse/Android/Sdk; calabash-android run Email.apk -v --format html --out $(date +\"%Y-%m-%d\").html features/users.feature ; sleep 10";
             	    String[] cmdArray = {"xterm", "-e", myScript + " ; le_exec"};
             	    r.exec(cmdArray).waitFor();
             	} catch (InterruptedException ex){
@@ -175,8 +167,19 @@ public class View extends JPanel {
             	    ex.printStackTrace();
             	}
             	
-                JOptionPane.showMessageDialog(null, "Test finished! You can check reports.html again.");
-            	/*
+                JOptionPane.showMessageDialog(null, "Test finished! You can press OK to check your report(year-month-day.html) again.");
+            	
+                try {
+            	    Runtime r2 = Runtime.getRuntime();
+            	    String myScript2 = "firefox $(date +\"%Y-%m-%d\").html";
+            	    String[] cmdArray = {"xterm", "-e", myScript2 + " ; le_exec"};
+            	    r2.exec(cmdArray).waitFor();
+            	} catch (InterruptedException ex){
+            	    ex.printStackTrace();
+            	} catch (IOException ex) {
+            	    ex.printStackTrace();
+            	}
+                /*
 
                 //Create my_first.feature file to be used for calabash
                 File file =new File("calabash\\features\\my_first.feature");
