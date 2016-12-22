@@ -11,10 +11,13 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -190,7 +193,15 @@ public class Control {
 
             //create object to print sheet elements on window
             checklist = new Checklist(checklist_item, function, test_method, criteria, test_info, status);
-
+        	//Create my_first.feature file to be used for calabash
+            File featureFile =new File("features/users.feature");
+            try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(featureFile), "utf-8"))) {
+                writer.write(Control.calabash_steps);
+            }
+            catch(Exception ex) {
+                ex.printStackTrace();
+            }
             //add sheet object to arraylist
             checklists.add(checklist);
         }
